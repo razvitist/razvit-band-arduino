@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Будильник</title>
+  <link href="/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div class="container">
+    <br>
+    <div class="d-flex justify-content-between align-items-center">
+      <a href="/"><img class="l-arrow"></a>
+      <div><span class="h6">Будильник</span></div>
+      <img class="l-arrow" style="visibility: hidden;">
+    </div>
+    <br>
+    <form action="/get">
+      <label for="input1" class="form-label">Время</label>
+      <div class="input-group mb-3">
+        <input name="alarmTime" value="%alarmTime%" type="time" class="form-control" id="input1"> <!-- value="${h1}:${m1}" -->
+      </div>
+      <label for="input2" class="form-label">Сколько длится</label>
+      <div class="mb-3">
+        <div class="input-group">
+          <input name="alarmLen" value="%alarmLen%" type="number" class="form-control" id="input2" step="1" min="0">
+          <span class="input-group-text">мин</span>
+        </div>
+        <div class="form-text">0 - отключение будильника</div>
+      </div>
+      <label for="input3" class="form-label">Отложить запуск</label>
+      <div class="mb-3">
+        <div class="input-group">
+          <input name="alarmAfter" value="%alarmAfter%" type="number" class="form-control" id="input3" step="1" min="0">
+          <span class="input-group-text">мин</span>
+        </div>
+        <div class="form-text">0 - не откладывать</div>
+        <div class="form-text">Для завершения настройки нужно перезагрузить страницу со включённым интернетом, которая откроется при нажатии на кнопку "Сохранить"</div>
+        <div class="form-text">Для работы нужно использовать стороннее устройство на ESP8266 с программой</div>
+        <a href="#" class="form-text">Инструкция по созданию устройства</a>
+      </div>
+      <br>
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+        <a class="btn btn-outline-primary" role="button" onclick="window.open(`http://blynk-cloud.com/ZKML8ge30LuJdth2geTS8ts279irOI1s/update/V11?value=${document.querySelector('#input1').value}&value=${document.querySelector('#input2').value}`, '_blank').focus()">Отправить</a>
+        <button type="reset" class="btn btn-outline-danger">Отменить</button>
+      </div>
+    </form>
+  </div>
+  <script src="/bootstrap.min.js" type="text/javascript"></script>
+  <script src="/script.js" type="text/javascript"></script>
+</body>
+</html>

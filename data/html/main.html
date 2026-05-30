@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Основные</title>
+  <link href="/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div class="container">
+    <br>
+    <div class="d-flex justify-content-between align-items-center">
+      <a href="/"><img class="l-arrow"></a>
+      <div><span class="h6">Основные</span></div>
+      <img class="l-arrow" style="visibility: hidden;">
+    </div>
+    <br>
+    <form action="/get">
+      <div class="mb-3">
+        <label for="input1" class="form-label" required>Имя устройства</label>
+        <input name="name" value="%name%" type="text" class="form-control" id="input1" required>
+        <div class="form-text">Имя отображается в списке подключённых Wi-Fi устройств и является названием точки доступа для настройки</div>
+      </div>
+      <div class="mb-3">
+        <label for="input2" class="form-label" required>Пароль</label>
+        <input name="code" value="%code%" type="password" class="form-control" id="input2">
+        <div class="form-text">Пароль для подключения к точке доступа для настройки</div>
+      </div>
+      <div class="mb-3">
+        <label for="input3" class="form-label">Мощность нагрева</label>
+        <div class="d-flex p-2 align-items-center">
+          <output style="width: 3rem; margin-right: 0.8rem;" class="badge bg-primary rounded-pill">%temperature%</output>
+          <input name="temperature" value="%temperature%" type="range" class="form-range" min="0" max="255" id="input3" oninput="this.previousElementSibling.value = this.value">
+        </div>
+      </div>
+      <div class="mb-3 range">
+        <label for="input4" class="form-label">Ник</label>
+        <input name="nickname" value="%nickname%" type="text" class="form-control" id="input4">
+        <div class="form-text">Ник на band.razvit.org. Нужен для работы многих функций (Extension и др.)</div>
+      </div>
+      <br>
+      <div class="mb-3 range">
+        <label for="input5" class="form-label">Кастомный MAC адрес</label>
+        <input name="mac" value="%mac%" type="text" class="form-control" id="input5">
+        <div class="form-text">Нужен для подключения к открытым сетям, в которых требуется авторизация или ввод номера телефона. Для этого нужно авторизироваться со смартфона или другого устройства, а затем скопировать его MAC адрес</div>
+      </div>
+      <br>
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+        <button type="reset" class="btn btn-outline-danger">Отменить</button>
+      </div>
+    </form>
+    <br>
+    <div class="d-flex justify-content-between">
+      <a class="btn btn-outline-primary" role="button" href="/reset">Перезагрузить</a>
+      <a class="btn btn-outline-danger" role="button" href="/off">Выключить</a>
+    </div>
+  </div>
+  <script src="/bootstrap.min.js" type="text/javascript"></script>
+  <script src="/script.js" type="text/javascript"></script>
+</body>
+</html>
