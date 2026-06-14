@@ -1,46 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Логи</title>
-  <link href="/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="/style.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-  <div class="container">
-    <br>
-    <div class="d-flex justify-content-between align-items-center">
-      <a href="/"><img class="l-arrow"></a>
-      <div><span class="h6">Логи</span></div>
-      <img class="l-arrow" style="visibility: hidden;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Логи</title>
+    <link href="/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+      <br />
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="/"><img class="l-arrow" /></a>
+        <div><span class="h6">Логи</span></div>
+        <img class="l-arrow" style="visibility: hidden" />
+      </div>
+      <br />
+      <form action="/get">
+        <div class="d-grid gap-2 mb-3">
+          <input
+            type="submit"
+            name="isLog"
+            value="1"
+            class="btn-check"
+            id="input1"
+          />
+          <label name="isLog" class="btn btn-outline-primary" for="input1"
+            >Записывать логи</label
+          >
+        </div>
+        <div class="d-grid gap-2 mb-3">
+          <input
+            type="submit"
+            name="isLog"
+            value="0"
+            class="btn-check"
+            id="input2"
+          />
+          <label name="isLog" class="btn btn-outline-danger" for="input2"
+            >Не записывать логи</label
+          >
+        </div>
+      </form>
+      <form action="/log.txt">
+        <div class="d-grid gap-2 mb-3">
+          <input type="submit" class="btn-check" id="input3" />
+          <label class="btn btn-primary" for="input3">Открыть log.txt</label>
+        </div>
+      </form>
+      <form action="/log-clear">
+        <div class="d-grid gap-2 mb-3">
+          <input type="submit" class="btn-check" id="input4" />
+          <label class="btn btn-danger" for="input4">Очистить log.txt</label>
+        </div>
+      </form>
     </div>
-    <br>
-    <form action="/get">
-      <div class="d-grid gap-2 mb-3">
-        <input type="submit" name="isLog" value="1" class="btn-check" id="input1">
-        <label name="isLog" class="btn btn-outline-primary" for="input1">Записывать логи</label>
-      </div>
-      <div class="d-grid gap-2 mb-3">
-        <input type="submit" name="isLog" value="0" class="btn-check" id="input2">
-        <label name="isLog" class="btn btn-outline-danger" for="input2">Не записывать логи</label>
-      </div>
-    </form>
-    <form action="/log.txt">
-      <div class="d-grid gap-2 mb-3">
-        <input type="submit" class="btn-check" id="input3">
-        <label class="btn btn-primary" for="input3">Открыть log.txt</label>
-      </div>
-    </form>
-    <form action="/log-clear">
-      <div class="d-grid gap-2 mb-3">
-        <input type="submit" class="btn-check" id="input4">
-        <label class="btn btn-danger" for="input4">Очистить log.txt</label>
-      </div>
-    </form>
-  </div>
-  <script src="/bootstrap.min.js" type="text/javascript"></script>
-  <script src="/script.js" type="text/javascript"></script>
-</body>
+    <script src="/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/script.js" type="text/javascript"></script>
+  </body>
 </html>

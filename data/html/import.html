@@ -1,79 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Импорт и экспорт</title>
-  <link href="/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="/style.css" rel="stylesheet" type="text/css">
-  <style>textarea{font-family: monospace}</style>
-</head>
-<body>
-  <div class="container">
-    <br>
-    <div class="d-flex justify-content-between align-items-center">
-      <a href="/"><img class="l-arrow"></a>
-      <div><span class="h6">Импорт и экспорт</span></div>
-      <img class="l-arrow" style="visibility: hidden;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Импорт и экспорт</title>
+    <link href="/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+    <style>
+      textarea {
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <br />
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="/"><img class="l-arrow" /></a>
+        <div><span class="h6">Импорт и экспорт</span></div>
+        <img class="l-arrow" style="visibility: hidden" />
+      </div>
+      <br />
+      <form action="#">
+        <div class="mb-3">
+          <label for="input1" class="form-label">Настройки</label>
+          <textarea
+            name="config"
+            class="form-control"
+            id="input1"
+            rows="15"
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="input2" class="form-label">Расписание</label>
+          <textarea
+            name="schedule"
+            class="form-control"
+            id="input2"
+            rows="10"
+          ></textarea>
+        </div>
+        <div class="form-text">
+          Позволяет экспортировать и импортировать настройки браслета в формате
+          JSON, что очень полезно при обновлении.
+        </div>
+        <br />
+        <div class="d-flex justify-content-between">
+          <button type="submit" class="btn btn-outline-primary">
+            Сохранить
+          </button>
+          <button type="reset" class="btn btn-outline-danger">Отменить</button>
+        </div>
+      </form>
     </div>
-    <br>
-    <form action="#">
-      <div class="mb-3">
-        <label for="input1" class="form-label">Настройки</label>
-        <textarea name="config" class="form-control" id="input1" rows="15"></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="input2" class="form-label">Расписание</label>
-        <textarea name="schedule" class="form-control" id="input2" rows="10"></textarea>
-      </div>
-      <div class="form-text">Позволяет экспортировать и импортировать настройки браслета в формате JSON, что очень полезно при обновлении.</div>
-      <br>
-      <div class="d-flex justify-content-between">
-        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
-        <button type="reset" class="btn btn-outline-danger">Отменить</button>
-      </div>
-    </form>
-  </div>
-  <script type="text/javascript">
-    const config = document.querySelector('#input1')
-    const schedule = document.querySelector('#input2')
+    <script type="text/javascript">
+      const config = document.querySelector('#input1');
+      const schedule = document.querySelector('#input2');
 
-    let client = new XMLHttpRequest()
-    client.open('GET', '/config.json')
-    client.onload = () => {
-      config.value = client.responseText
-    }
-    client.send()
+      let client = new XMLHttpRequest();
+      client.open('GET', '/config.json');
+      client.onload = () => {
+        config.value = client.responseText;
+      };
+      client.send();
 
-    let client2 = new XMLHttpRequest()
-    client2.open('GET', '/schedule.json')
-    client2.onload = () => {
-      schedule.value = client2.responseText
-    }
-    client2.send()
-    
-    document.querySelector('button[type="submit"]').onclick = (event) => {
-      event.preventDefault();
+      let client2 = new XMLHttpRequest();
+      client2.open('GET', '/schedule.json');
+      client2.onload = () => {
+        schedule.value = client2.responseText;
+      };
+      client2.send();
 
-      console.log(config.value)
-      console.log(schedule.value)
+      document.querySelector('button[type="submit"]').onclick = (event) => {
+        event.preventDefault();
 
-      let xhr = new XMLHttpRequest()
-      xhr.open('POST', '/post-config')
-      xhr.responseType = 'json'
-      xhr.setRequestHeader('Content-Type', 'application/json')
-      xhr.send(config.value)
+        console.log(config.value);
+        console.log(schedule.value);
 
-      xhr = new XMLHttpRequest()
-      xhr.open('POST', '/post-schedule')
-      xhr.responseType = 'json'
-      xhr.setRequestHeader('Content-Type', 'application/json')
-      xhr.send(schedule.value)
-      setTimeout(() => document.location.reload(false), 2000)
-    }
-  </script>
-  <script src="/bootstrap.min.js" type="text/javascript"></script>
-  <!-- <script src="script.js" type="text/javascript"></script> -->
-</body>
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/post-config');
+        xhr.responseType = 'json';
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(config.value);
+
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', '/post-schedule');
+        xhr.responseType = 'json';
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(schedule.value);
+        setTimeout(() => document.location.reload(false), 2000);
+      };
+    </script>
+    <script src="/bootstrap.min.js" type="text/javascript"></script>
+    <!-- <script src="script.js" type="text/javascript"></script> -->
+  </body>
 </html>

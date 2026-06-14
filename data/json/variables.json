@@ -1,14 +1,14 @@
 {
-    "stepik": 0,
-    "stepikDay": 0,
-    "realDay": 0,
-    "codewars": 0,
-    "leetcodeEasy": 0,
-    "leetcodeMedium": 0,
-    "leetcodeHard": 0,
-    "video": 0,
-    "extension": 0,
-    "program": 0,
-    "ankiRated": 0,
-    "ankiAdd": 0
+  "stepik": 0,
+  "stepikDay": 0,
+  "realDay": 0,
+  "codewars": 0,
+  "leetcodeEasy": 0,
+  "leetcodeMedium": 0,
+  "leetcodeHard": 0,
+  "video": 0,
+  "extension": 0,
+  "program": 0,
+  "ankiRated": 0,
+  "ankiAdd": 0
 }

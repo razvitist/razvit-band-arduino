@@ -1,50 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wi-Fi</title>
-  <link href="/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="/style.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-  <div class="container">
-    <br>
-    <div class="d-flex justify-content-between align-items-center">
-      <a href="/"><img class="l-arrow"></a>
-      <div><span class="h6">Wi-Fi</span></div>
-      <img class="l-arrow" style="visibility: hidden;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wi-Fi</title>
+    <link href="/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+      <br />
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="/"><img class="l-arrow" /></a>
+        <div><span class="h6">Wi-Fi</span></div>
+        <img class="l-arrow" style="visibility: hidden" />
+      </div>
+      <br />
+      <form action="/get">
+        <div class="mb-3">
+          <label for="input1" class="form-label">Имя сети</label>
+          <input
+            name="ssid"
+            value="%ssid%"
+            type="text"
+            class="form-control"
+            id="input1"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="input2" class="form-label">Пароль</label>
+          <input
+            name="pass"
+            value="%pass%"
+            type="password"
+            class="form-control"
+            id="input2"
+          />
+        </div>
+        <div id="cards"></div>
+        <div class="d-grid gap-2">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            onclick="create()"
+          >
+            +
+          </button>
+        </div>
+        <div class="form-text">
+          Введите данные Wi-Fi, к которому будет подключаться браслет. Можно
+          ввести данные сразу нескольких Wi-Fi точек, тогда браслет будет
+          подключаться к самой сильной.
+        </div>
+        <br />
+        <div class="d-flex justify-content-between">
+          <button type="submit" class="btn btn-outline-primary">
+            Сохранить
+          </button>
+          <button type="reset" class="btn btn-outline-danger">Отменить</button>
+        </div>
+      </form>
     </div>
-    <br>
-    <form action="/get">
-      <div class="mb-3">
-        <label for="input1" class="form-label">Имя сети</label>
-        <input name="ssid" value="%ssid%" type="text" class="form-control" id="input1">
-      </div>
-      <div class="mb-3">
-        <label for="input2" class="form-label">Пароль</label>
-        <input name="pass" value="%pass%" type="password" class="form-control" id="input2">
-      </div>
-      <div id="cards"></div>
-      <div class="d-grid gap-2"><button type="button" class="btn btn-outline-primary" onclick="create()">+</button></div>
-      <div class="form-text">Введите данные Wi-Fi, к которому будет подключаться браслет. Можно ввести данные сразу нескольких Wi-Fi точек, тогда браслет будет подключаться к самой сильной.</div>
-      <br>
-      <div class="d-flex justify-content-between">
-        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
-        <button type="reset" class="btn btn-outline-danger">Отменить</button>
-      </div>
-    </form>
-  </div>
-  <script>
-    let n = 0
-    let client = new XMLHttpRequest()
-    client.open('GET', '/wifi.json')
-    client.onload = function() {
-      for (let i of JSON.parse(client.responseText)){
-        n++
-        let x = document.createElement("div")
-        x.innerHTML = `<div class="card mb-3" id="card${n}">
+    <script>
+      let n = 0;
+      let client = new XMLHttpRequest();
+      client.open('GET', '/wifi.json');
+      client.onload = function () {
+        for (let i of JSON.parse(client.responseText)) {
+          n++;
+          let x = document.createElement('div');
+          x.innerHTML = `<div class="card mb-3" id="card${n}">
         <div class="card-body">
           <div class="mb-3">
             <label for="input1${n}" class="form-label">Имя сети</label>
@@ -56,15 +82,15 @@
           </div>
           <div class="d-grid gap-2"><button type="button" class="btn btn-outline-danger" onclick="this.parentElement.parentElement.parentElement.remove()">Удалить</button></div>
         </div>
-      </div>`
-        document.querySelector('#cards').appendChild(x)
-      }
-    }
-    client.send()
-    function create() {
-      n++
-      let x = document.createElement("div")
-      x.innerHTML = `<div class="card mb-3" id="card${n}">
+      </div>`;
+          document.querySelector('#cards').appendChild(x);
+        }
+      };
+      client.send();
+      function create() {
+        n++;
+        let x = document.createElement('div');
+        x.innerHTML = `<div class="card mb-3" id="card${n}">
         <div class="card-body">
           <div class="mb-3">
             <label for="input1${n}" class="form-label">Имя сети</label>
@@ -76,31 +102,37 @@
           </div>
           <div class="d-grid gap-2"><button type="button" class="btn btn-outline-danger" onclick="this.parentElement.parentElement.parentElement.remove()">Удалить</button></div>
         </div>
-      </div>`
-      document.querySelector('#cards').appendChild(x)
-    }
-    const form = document.querySelector('form')
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      let xhr = new XMLHttpRequest()
-      xhr.open('GET', `/get?ssid=${document.querySelector('[name=ssid]').value}&pass=${document.querySelector('[name=pass]').value}`)
-      xhr.send()
-
-      const cards = form.querySelectorAll('.card')
-      let body = []
-      for (let card of cards){
-        body.push([card.querySelector('[name=ssid]').value, card.querySelector('[name=pass]').value])
+      </div>`;
+        document.querySelector('#cards').appendChild(x);
       }
-      console.log(body)
-      xhr = new XMLHttpRequest()
-      xhr.open('POST', '/post-wifi')
-      xhr.responseType = 'json'
-      xhr.setRequestHeader('Content-Type', 'application/json')
-      xhr.send(JSON.stringify(body))
-    })
-  </script>
-  <script src="/bootstrap.min.js" type="text/javascript"></script>
-  <script src="/script.js" type="text/javascript"></script>
-</body>
+      const form = document.querySelector('form');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        let xhr = new XMLHttpRequest();
+        xhr.open(
+          'GET',
+          `/get?ssid=${document.querySelector('[name=ssid]').value}&pass=${document.querySelector('[name=pass]').value}`,
+        );
+        xhr.send();
+
+        const cards = form.querySelectorAll('.card');
+        let body = [];
+        for (let card of cards) {
+          body.push([
+            card.querySelector('[name=ssid]').value,
+            card.querySelector('[name=pass]').value,
+          ]);
+        }
+        console.log(body);
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', '/post-wifi');
+        xhr.responseType = 'json';
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(body));
+      });
+    </script>
+    <script src="/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/script.js" type="text/javascript"></script>
+  </body>
 </html>

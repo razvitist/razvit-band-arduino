@@ -1,47 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Расписание</title>
-  <link href="/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="/style.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-  <div class="container">
-    <br>
-    <div class="d-flex justify-content-between align-items-center">
-      <a href="/"><img class="l-arrow"></a>
-      <div><span class="h6">Расписание</span></div>
-      <img class="l-arrow" style="visibility: hidden;">
-    </div>
-    <br>
-    <form action="/get">
-      <div id="cards"></div>
-      <div class="d-grid gap-2"><button type="button" class="btn btn-outline-primary" onclick="create()">+</button></div>
-      <br>
-      <div class="d-flex justify-content-between">
-        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
-        <button type="reset" class="btn btn-outline-danger">Отменить</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Расписание</title>
+    <link href="/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+      <br />
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="/"><img class="l-arrow" /></a>
+        <div><span class="h6">Расписание</span></div>
+        <img class="l-arrow" style="visibility: hidden" />
       </div>
-    </form>
-  </div>
-  <script type="text/javascript">
-    let n = 0
-    let client = new XMLHttpRequest()
-    client.open('GET', '/schedule.json')
-    client.onload = function() {
-      for (let i of JSON.parse(client.responseText)){
+      <br />
+      <form action="/get">
+        <div id="cards"></div>
+        <div class="d-grid gap-2">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            onclick="create()"
+          >
+            +
+          </button>
+        </div>
+        <br />
+        <div class="d-flex justify-content-between">
+          <button type="submit" class="btn btn-outline-primary">
+            Сохранить
+          </button>
+          <button type="reset" class="btn btn-outline-danger">Отменить</button>
+        </div>
+      </form>
+    </div>
+    <script type="text/javascript">
+      let n = 0
+      let client = new XMLHttpRequest()
+      client.open('GET', '/schedule.json')
+      client.onload = function() {
+        for (let i of JSON.parse(client.responseText)){
+          n++
+          let h1 = Math.floor(i[1] / 60)
+          let m1 = i[1] %% 60
+          let h2 = Math.floor(i[2] / 60)
+          let m2 = i[2] %% 60
+          if (h1 < 10) {h1 = "0" + h1}
+          if (m1 < 10) {m1 = "0" + m1}
+          if (h2 < 10) {h2 = "0" + h2}
+          if (m2 < 10) {m2 = "0" + m2}
+          let x = document.createElement("div")
+          x.innerHTML = `<div class="card mb-3" id="card${n}">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <img id="down-arrow">
+                  <img id="up-arrow">
+                </div>
+                <button type="button" class="btn-close mb-2" onclick="document.querySelector('#card${n}').parentElement.remove()"></button>
+              </div>
+              <select name="m" multiple class="form-select mb-3" size="3" required>
+                <option ${i[0].includes("sleep") ? "selected" : ""} value="sleep">sleep</option>
+                <option ${i[0].includes("api") ? "selected" : ""} value="api">api</option>
+                <option ${i[0].includes("anki") ? "selected" : ""} value="anki">anki</option>
+                <option ${i[0].includes("stepik") ? "selected" : ""} value="stepik">stepik</option>
+                <option ${i[0].includes("codewars") ? "selected" : ""} value="codewars">codewars</option>
+                <option ${i[0].includes("leetcode") ? "selected" : ""} value="leetcode">leetcode</option>
+                <option ${i[0].includes("github") ? "selected" : ""} value="github">github</option>
+                <option ${i[0].includes("yandex") ? "selected" : ""} value="yandex">yandex</option>
+                <option ${i[0].includes("video") ? "selected" : ""} value="video">video</option>
+                <option ${i[0].includes("extension") ? "selected" : ""} value="extension">extension</option>
+                <option ${i[0].includes("program") ? "selected" : ""} value="program">program</option>
+                <option ${i[0].includes("ankirated") ? "selected" : ""} value="ankirated">Anki Rated</option>
+                <option ${i[0].includes("ankiadd") ? "selected" : ""} value="ankiadd">Anki Add</option>
+                %custom1%
+              </select>
+              <div class="input-group mb-3">
+                <input value="${h1}:${m1}" name="s" type="time" class="form-control" required>
+                <input value="${h2}:${m2}" name="e" type="time" class="form-control" required>
+              </div>
+              <div class="btn-group btn-group-sm d-flex w-100" role="group" aria-label="Basic checkbox toggle button group">
+                <input ${i[3][0] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck1${n}" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btncheck1${n}">Пн</label>
+                <input ${i[3][1] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck2${n}" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btncheck2${n}">Вт</label>
+                <input ${i[3][2] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck3${n}" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btncheck3${n}">Ср</label>
+                <input ${i[3][3] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck4${n}" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btncheck4${n}">Чт</label>
+                <input ${i[3][4] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck5${n}" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btncheck5${n}">Пт</label>
+                <input ${i[3][5] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck6${n}" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btncheck6${n}">Сб</label>
+                <input ${i[3][6] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck7${n}" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btncheck7${n}">Вс</label>
+              </div>
+            </div>
+          </div>`
+          document.querySelector('#cards').appendChild(x)
+        }
+        var upLink = document.querySelectorAll("#up-arrow");
+        for (var i = 0; i < upLink.length; i++) {
+          upLink[i].addEventListener('click', function () {
+            var wrapper = this.parentElement.parentElement.parentElement.parentElement.parentElement;
+            if (wrapper.previousElementSibling)
+                wrapper.parentNode.insertBefore(wrapper, wrapper.previousElementSibling);
+          });
+        }
+        var downLink = document.querySelectorAll("#down-arrow");
+        for (var i = 0; i < downLink.length; i++) {
+          downLink[i].addEventListener('click', function () {
+            var wrapper = this.parentElement.parentElement.parentElement.parentElement.parentElement;
+            if (wrapper.nextElementSibling)
+                wrapper.parentNode.insertBefore(wrapper.nextElementSibling, wrapper);
+          });
+        }
+      }
+      client.send()
+      function create() {
         n++
-        let h1 = Math.floor(i[1] / 60)
-        let m1 = i[1] %% 60
-        let h2 = Math.floor(i[2] / 60)
-        let m2 = i[2] %% 60
-        if (h1 < 10) {h1 = "0" + h1}
-        if (m1 < 10) {m1 = "0" + m1}
-        if (h2 < 10) {h2 = "0" + h2}
-        if (m2 < 10) {m2 = "0" + m2}
         let x = document.createElement("div")
         x.innerHTML = `<div class="card mb-3" id="card${n}">
           <div class="card-body">
@@ -53,169 +133,99 @@
               <button type="button" class="btn-close mb-2" onclick="document.querySelector('#card${n}').parentElement.remove()"></button>
             </div>
             <select name="m" multiple class="form-select mb-3" size="3" required>
-              <option ${i[0].includes("sleep") ? "selected" : ""} value="sleep">sleep</option>
-              <option ${i[0].includes("api") ? "selected" : ""} value="api">api</option>
-              <option ${i[0].includes("anki") ? "selected" : ""} value="anki">anki</option>
-              <option ${i[0].includes("stepik") ? "selected" : ""} value="stepik">stepik</option>
-              <option ${i[0].includes("codewars") ? "selected" : ""} value="codewars">codewars</option>
-              <option ${i[0].includes("leetcode") ? "selected" : ""} value="leetcode">leetcode</option>
-              <option ${i[0].includes("github") ? "selected" : ""} value="github">github</option>
-              <option ${i[0].includes("yandex") ? "selected" : ""} value="yandex">yandex</option>
-              <option ${i[0].includes("video") ? "selected" : ""} value="video">video</option>
-              <option ${i[0].includes("extension") ? "selected" : ""} value="extension">extension</option>
-              <option ${i[0].includes("program") ? "selected" : ""} value="program">program</option>
-              <option ${i[0].includes("ankirated") ? "selected" : ""} value="ankirated">Anki Rated</option>
-              <option ${i[0].includes("ankiadd") ? "selected" : ""} value="ankiadd">Anki Add</option>
-              %custom1%
+              <option value="sleep">sleep</option>
+              <option value="api">api</option>
+              <option value="anki">anki</option>
+              <option value="stepik">stepik</option>
+              <option value="codewars">codewars</option>
+              <option value="leetcode">leetcode</option>
+              <option value="github">github</option>
+              <option value="yandex">yandex</option>
+              <option value="video">video</option>
+              <option value="extension">extension</option>
+              <option value="program">program</option>
+              <option value="ankirated">Anki Rated</option>
+              <option value="ankiadd">Anki Add</option>
+              %custom2%
             </select>
             <div class="input-group mb-3">
-              <input value="${h1}:${m1}" name="s" type="time" class="form-control" required>
-              <input value="${h2}:${m2}" name="e" type="time" class="form-control" required>
+              <input name="s" type="time" class="form-control" required>
+              <input name="e" type="time" class="form-control" required>
             </div>
             <div class="btn-group btn-group-sm d-flex w-100" role="group" aria-label="Basic checkbox toggle button group">
-              <input ${i[3][0] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck1${n}" autocomplete="off">
+              <input name="w" type="checkbox" class="btn btn-check" id="btncheck1${n}" autocomplete="off">
               <label class="btn btn-outline-primary" for="btncheck1${n}">Пн</label>
-              <input ${i[3][1] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck2${n}" autocomplete="off">
+              <input name="w" type="checkbox" class="btn btn-check" id="btncheck2${n}" autocomplete="off">
               <label class="btn btn-outline-primary" for="btncheck2${n}">Вт</label>
-              <input ${i[3][2] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck3${n}" autocomplete="off">
+              <input name="w" type="checkbox" class="btn btn-check" id="btncheck3${n}" autocomplete="off">
               <label class="btn btn-outline-primary" for="btncheck3${n}">Ср</label>
-              <input ${i[3][3] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck4${n}" autocomplete="off">
+              <input name="w" type="checkbox" class="btn btn-check" id="btncheck4${n}" autocomplete="off">
               <label class="btn btn-outline-primary" for="btncheck4${n}">Чт</label>
-              <input ${i[3][4] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck5${n}" autocomplete="off">
+              <input name="w" type="checkbox" class="btn btn-check" id="btncheck5${n}" autocomplete="off">
               <label class="btn btn-outline-primary" for="btncheck5${n}">Пт</label>
-              <input ${i[3][5] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck6${n}" autocomplete="off">
+              <input name="w" type="checkbox" class="btn btn-check" id="btncheck6${n}" autocomplete="off">
               <label class="btn btn-outline-primary" for="btncheck6${n}">Сб</label>
-              <input ${i[3][6] ? "checked" : ""} name="w" type="checkbox" class="btn btn-check" id="btncheck7${n}" autocomplete="off">
+              <input name="w" type="checkbox" class="btn btn-check" id="btncheck7${n}" autocomplete="off">
               <label class="btn btn-outline-primary" for="btncheck7${n}">Вс</label>
             </div>
           </div>
         </div>`
         document.querySelector('#cards').appendChild(x)
-      }
-      var upLink = document.querySelectorAll("#up-arrow");
-      for (var i = 0; i < upLink.length; i++) {
-        upLink[i].addEventListener('click', function () {
+        const upLink = document.querySelectorAll("#up-arrow");
+        upLink[upLink.length - 1].addEventListener('click', function () {
           var wrapper = this.parentElement.parentElement.parentElement.parentElement.parentElement;
           if (wrapper.previousElementSibling)
               wrapper.parentNode.insertBefore(wrapper, wrapper.previousElementSibling);
-        });
-      }
-      var downLink = document.querySelectorAll("#down-arrow");
-      for (var i = 0; i < downLink.length; i++) {
-        downLink[i].addEventListener('click', function () {
+          });
+        const downLink = document.querySelectorAll("#down-arrow");
+        downLink[downLink.length - 1].addEventListener('click', function () {
           var wrapper = this.parentElement.parentElement.parentElement.parentElement.parentElement;
           if (wrapper.nextElementSibling)
               wrapper.parentNode.insertBefore(wrapper.nextElementSibling, wrapper);
         });
       }
-    }
-    client.send()
-    function create() {
-      n++
-      let x = document.createElement("div")
-      x.innerHTML = `<div class="card mb-3" id="card${n}">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <div>
-              <img id="down-arrow">
-              <img id="up-arrow">
-            </div>
-            <button type="button" class="btn-close mb-2" onclick="document.querySelector('#card${n}').parentElement.remove()"></button>
-          </div>
-          <select name="m" multiple class="form-select mb-3" size="3" required>
-            <option value="sleep">sleep</option>
-            <option value="api">api</option>
-            <option value="anki">anki</option>
-            <option value="stepik">stepik</option>
-            <option value="codewars">codewars</option>
-            <option value="leetcode">leetcode</option>
-            <option value="github">github</option>
-            <option value="yandex">yandex</option>
-            <option value="video">video</option>
-            <option value="extension">extension</option>
-            <option value="program">program</option>
-            <option value="ankirated">Anki Rated</option>
-            <option value="ankiadd">Anki Add</option>
-            %custom2%
-          </select>
-          <div class="input-group mb-3">
-            <input name="s" type="time" class="form-control" required>
-            <input name="e" type="time" class="form-control" required>
-          </div>
-          <div class="btn-group btn-group-sm d-flex w-100" role="group" aria-label="Basic checkbox toggle button group">
-            <input name="w" type="checkbox" class="btn btn-check" id="btncheck1${n}" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btncheck1${n}">Пн</label>
-            <input name="w" type="checkbox" class="btn btn-check" id="btncheck2${n}" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btncheck2${n}">Вт</label>
-            <input name="w" type="checkbox" class="btn btn-check" id="btncheck3${n}" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btncheck3${n}">Ср</label>
-            <input name="w" type="checkbox" class="btn btn-check" id="btncheck4${n}" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btncheck4${n}">Чт</label>
-            <input name="w" type="checkbox" class="btn btn-check" id="btncheck5${n}" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btncheck5${n}">Пт</label>
-            <input name="w" type="checkbox" class="btn btn-check" id="btncheck6${n}" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btncheck6${n}">Сб</label>
-            <input name="w" type="checkbox" class="btn btn-check" id="btncheck7${n}" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btncheck7${n}">Вс</label>
-          </div>
-        </div>
-      </div>`
-      document.querySelector('#cards').appendChild(x)
-      const upLink = document.querySelectorAll("#up-arrow");
-      upLink[upLink.length - 1].addEventListener('click', function () {
-        var wrapper = this.parentElement.parentElement.parentElement.parentElement.parentElement;
-        if (wrapper.previousElementSibling)
-            wrapper.parentNode.insertBefore(wrapper, wrapper.previousElementSibling);
-        });
-      const downLink = document.querySelectorAll("#down-arrow");
-      downLink[downLink.length - 1].addEventListener('click', function () {
-        var wrapper = this.parentElement.parentElement.parentElement.parentElement.parentElement;
-        if (wrapper.nextElementSibling)
-            wrapper.parentNode.insertBefore(wrapper.nextElementSibling, wrapper);
-      });
-    }
-    const form = document.querySelector('form')
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const cards = form.querySelectorAll('.card')
-      let body = []
-      for (let card of cards){
-        const x = card.querySelectorAll('[name="w"]')
-        let w = []
-        for (let i in x){
-          if (x.hasOwnProperty(i)){
-            w.push(x[i].checked ? 1 : 0)
+      const form = document.querySelector('form')
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const cards = form.querySelectorAll('.card')
+        let body = []
+        for (let card of cards){
+          const x = card.querySelectorAll('[name="w"]')
+          let w = []
+          for (let i in x){
+            if (x.hasOwnProperty(i)){
+              w.push(x[i].checked ? 1 : 0)
+            }
           }
-        }
-        m = []
-        for (const i of card.querySelector('[name="m"]').options) {
-          if (i.selected) {
-            m.push(i.value)
+          m = []
+          for (const i of card.querySelector('[name="m"]').options) {
+            if (i.selected) {
+              m.push(i.value)
+            }
           }
+          let s = card.querySelector('[name="s"]').value
+          let e = card.querySelector('[name="e"]').value
+          if (s && e){
+            s = s.split(':')
+            e = e.split(':')
+            s = (+s[0]) * 60 + (+s[1])
+            e = (+e[0]) * 60 + (+e[1])
+          }
+          else {
+            s = 0
+            e = 0
+          }
+          body.push([m, s, e, w])
         }
-        let s = card.querySelector('[name="s"]').value
-        let e = card.querySelector('[name="e"]').value
-        if (s && e){
-          s = s.split(':')
-          e = e.split(':')
-          s = (+s[0]) * 60 + (+s[1])
-          e = (+e[0]) * 60 + (+e[1])
-        }
-        else {
-          s = 0
-          e = 0
-        }
-        body.push([m, s, e, w])
-      }
-      console.log(body)
-      let xhr = new XMLHttpRequest()
-      xhr.open('POST', '/post-schedule')
-      xhr.responseType = 'json'
-      xhr.setRequestHeader('Content-Type', 'application/json')
-      xhr.send(JSON.stringify(body))
-    })
-  </script>
-  <script src="/bootstrap.min.js" type="text/css"></script>
-  <script src="/script.js" type="text/javascript"></script>
-</body>
+        console.log(body)
+        let xhr = new XMLHttpRequest()
+        xhr.open('POST', '/post-schedule')
+        xhr.responseType = 'json'
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        xhr.send(JSON.stringify(body))
+      })
+    </script>
+    <script src="/bootstrap.min.js" type="text/css"></script>
+    <script src="/script.js" type="text/javascript"></script>
+  </body>
 </html>
